@@ -20,9 +20,3 @@ for file in file_list:
 
         count += 1
 
-
-plt.xlabel('degree')
-plt.ylabel('f1')
-plt.legend()
-plt.xlim(0,90)
-plt.grid()
