@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from fuction import CTS_Zeinedni
+import fuction
 
 xl = pd.read_excel('data/astm.xlsx')
 data = np.array(xl)
@@ -11,10 +11,11 @@ print(np.shape(data))
 
 for i in data:
     nuber = i[0]; a = i[4]; p = i[8]; b = 10; w = 30
-    k = CTS_Zeinedni(a,w,p,b)
-    kk = round(k[0])
+    a=fuction.CTS(a,w,p,b)
+    a.k1()
+    kk = round(a.k1()[0])
     y.append(kk)
-    x.append(k[1])
+    x.append(a.k1()[1])
 
 plt.plot(x,y)
 plt.scatter(x, y, c='red')
