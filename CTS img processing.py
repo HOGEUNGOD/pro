@@ -10,7 +10,7 @@ save_path = 'models/'
 file_list = os.listdir(path)
 count = 0
 for file in file_list:
-    if file.endswith(".jpg"):
+    if file.endswith(".png"):
         im1 = cv2.imread(path+ im_first, cv2.IMREAD_GRAYSCALE)
         im2 = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)
         im_calculate_first = np.array(im1)
