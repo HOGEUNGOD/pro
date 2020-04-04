@@ -29,6 +29,7 @@ for file in file_list:
         count += 1
         print(np.shape(im_calculate), count)
 
+print(x)
 
 #graph part
 y1 = result
