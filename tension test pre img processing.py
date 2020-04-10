@@ -48,6 +48,10 @@ line2 = ax0.plot(x, y2, color='r', label="STRESS(MPA)")
 ax[0].axvspan(0,stress_range, facecolor='g', alpha = 0.25)
 ax[0].set_xlim([0, np.max(x)])
 
+data = {'stress':y2, 'ml':y1}
+df = pd.DataFrame(data)
+df.to_csv(path)
+
 lines = line1 + line2
 labels = [l.get_label() for l in lines]
 ax[0].legend(lines, labels, loc=0)
