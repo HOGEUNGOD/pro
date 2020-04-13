@@ -3,6 +3,7 @@ import cv2
 import os
 import matplotlib as plt
 
+plt.plot()
 path = 'data/img/'
 im_first = 'ff000003.jpg'
 save_path = 'models/'
