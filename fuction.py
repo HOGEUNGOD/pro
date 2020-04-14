@@ -9,6 +9,13 @@ def ASTM_E399(Pq,a,B,W):
     kq=(Pq*f)/(B*(W**0.5)*1000000)
     return kq
 
+def true_ss(stress,strain):
+    """calculate tension test, convert stress, strain to true stress and true strain"""
+    true_stress = stress*(1 + strain)
+    true_strain = np.log(1 + strain)
+    result = np.array([true_stress, true_strain])
+    return result
+
 class CTS:
     """Calculate CTS Elastic stress intensity factor"""
     def __init__(self, a, w, p, b):
