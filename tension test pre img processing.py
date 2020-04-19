@@ -54,30 +54,46 @@ df.to_csv(path_save+'/data.csv')
 
 
 #graph part
+#############
+fig, ax = plt.subplots()
+ax1 = ax.twinx()
+ax.set_xlabel('TRUE STRAIN')
+ax.set_ylabel('ML_A.U.')
+ax1.set_ylabel('TRUE STRESS(MAP)')
+line1 = ax.plot(true_strain, true_stress, color='b', label="ML(A.U.)")
+line2 = ax1.plot(true_strain, ml_A, color='r', label="TRUE STRESS")
+lines = line1 + line2
+labels = [l.get_label() for l in lines]
+ax.legend(lines, labels, loc=0)
+ax.grid()
+fig.savefig(path_save+'/graph.png', dpi = 1000)
 
-fig, ax = plt.subplots(2,1)
+fig, ax2 = plt.subplots()
+ax2.plot(true_stress, ml_A)
+ax2.grid()
+ax2.set_xlabel('true stress')
+ax2.set_ylabel('ML A.U')
+fig.savefig(path_save+'/graph1.png', dpi = 1000)
+##############
+
+fig, ax = plt.subplots(2, 1)
 ax0 = ax[0].twinx()
 ax[0].set_xlabel('TRUE STRAIN')
 ax[0].set_ylabel('ML_A.U.')
 ax0.set_ylabel('TRUE STRESS(MAP)')
-line1 = ax[0].plot(true_strain, true_stress, color='b', label="ML(A.U.)")
-line2 = ax0.plot(true_strain, ml_A, color='r', label="TRUE STRESS")
-# ax[0].axvspan(0,stress_range, facecolor='g', alpha = 0.25)
-# ax[0].set_xlim([0, np.max(x)])
+line1 = ax[0].plot(true_strain, true_stress, color='b', label="TRUE STRESS")
+line2 = ax0.plot(true_strain, ml_A, color='r', label= "ML(A.U.)")
 
 lines = line1 + line2
 labels = [l.get_label() for l in lines]
 ax[0].legend(lines, labels, loc=0)
 ax[0].grid()
 
-
 ax[1].plot(true_stress, ml_A)
 ax[1].grid()
-# ax[1].fill_between(stress,ml,0.22,alpha=0.255)
 ax[1].set_xlabel('true stress')
 ax[1].set_ylabel('ML A.U')
 
-
 fig.tight_layout()
-fig.savefig(path_save+'graph.png', dpi = 1000)
+fig.savefig(path_save+'/graph2.png', dpi = 1000)
 fig.show()
