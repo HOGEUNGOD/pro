@@ -9,7 +9,7 @@ def ASTM_E399(Pq,a,B,W):
     kq=(Pq*f)/(B*(W**0.5)*1000000)
     return kq
 
-def true_ss(stress,strain):
+def true_ss(stress, strain):
     """calculate tension test, convert stress, strain to true stress and true strain"""
     true_stress = stress*(1 + strain)
     true_strain = np.log(1 + strain)
