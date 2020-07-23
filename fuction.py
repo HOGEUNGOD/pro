@@ -33,6 +33,6 @@ class CTS:
 
     def k2(self):
         f = self.a / self.w
-        f2 = 7.12 * math.pow(f, 4) - 5.47 * math.pow(f, 3) + 2.79 * math.pow(f, 2) + 2.63 * f + 0.20
+        f2 = 2.8 * math.pow(f, 4) - 6.5 * math.pow(f, 3) + 2.79 * math.pow(f, 2) + 2.63 * f + 0.12
         k2 = (math.sqrt(self.a * math.pi) * self.p *f2) / (self.w*self.b)
         return k2, f
