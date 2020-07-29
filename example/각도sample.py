@@ -27,6 +27,3 @@ for i in result:
 ax.tick_params(grid_color= "white")
 plt.savefig('models/bb.png',format='png', transparent=True)
 plt.show()
-
-
-

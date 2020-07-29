@@ -36,3 +36,7 @@ class CTS:
         f2 = 2.8 * math.pow(f, 4) - 6.5 * math.pow(f, 3) + 2.79 * math.pow(f, 2) + 2.63 * f + 0.12
         k2 = (math.sqrt(self.a * math.pi) * self.p *f2) / (self.w*self.b)
         return k2, f
+
+def K_deviator(sigma, r, theta):
+    K = (sigma * (2 * np.pi * r) ** 0.5)/(np.cos(theta/2)*((1 + np.sin(theta/2) ** 2)**0.5))
+    return K

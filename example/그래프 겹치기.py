@@ -20,5 +20,6 @@ plt.xlim(-0.1, 1.2)
 plt.grid()
 plt.legend(lines, labels, loc=0)
 plt.savefig('models\graph.png', dpi=600)
+plt.show()
 
 
