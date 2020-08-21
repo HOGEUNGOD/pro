@@ -28,7 +28,7 @@ result = []
 
 for file in file_list:
     if file.endswith(".jpg"):
-        im = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)
+        im = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)/255
         im_calculate = np.array(im)
         img_box = im_calculate[slice_y1:slice_y2, slice_x1:slice_x2]
         ave = np.average(img_box)
