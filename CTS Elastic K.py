@@ -10,13 +10,16 @@ y = []
 print(np.shape(data))
 
 for i in data:
-    nuber = i[0]; a = i[4]*10; p = i[8]/1000; b = 0.3; w = 3
-    a=fuction.CTS(a,w,p,b)
-    a.k1()
-    kk = round(a.k1())
+    nuber = i[0]; a = i[4]/10; p = i[8]/1000; b = 0.3; w = 3
+    aa=fuction.CTS(a,w,p,b)
+    aa.k1()
+    kk = round(aa.k1())
     y.append(kk)
-    x.append(a.k1())
 
+    x.append(a/w)
+
+print(x)
+print(y)
 plt.plot(x,y)
 plt.scatter(x, y, c='red')
 plt.xlabel('a/w')
