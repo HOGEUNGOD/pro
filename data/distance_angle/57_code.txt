@@ -1,0 +1,49 @@
+
+import cv2
+import numpy as np
+from scipy.spatial.distance import cdist
+import pandas as pd
+import matplotlib.pyplot as plt
+import fuction
+import cv2 as cv
+
+read = pd.read_excel('data\distance_angle/57_input_distance.xlsx')
+im_first =np.array(cv2.imread('data/distance_angle/ff000001.jpg', cv2.IMREAD_GRAYSCALE ))/255
+im_now =np.array(cv2.imread('data/distance_angle/ff000057.jpg', cv2.IMREAD_GRAYSCALE ))/255
+
+im = im_now-im_first
+
+
+
+crack_tip_loaction = np.array([[496,1473]])
+data = np.array(read)
+
+ratio = 2/278*0.001 # 2mm , mm to m
+K=128
+
+distance=[]
+Ml_intencity=[]
+stress = []
+
+
+
+for i in data:
+    theta=i[4]
+    calculater_location = np.array([[i[2],i[3]]])
+    distance_value = cdist(calculater_location, crack_tip_loaction)*ratio
+    distance = np.append(distance, distance_value)
+    value = np.average(im[int(i[2]):int(i[2]+2),int(i[3]):int(i[3])+2])
+    effective_sigma = fuction.K_sigma(K,distance, theta)
+
+    Ml_intencity = np.append(Ml_intencity, value)
+
+
+data_union = {'Contour N.o.': data[:,0], 'point': data[:,1],
+              'location_y': data[:,2], 'location_x': data[:,3],
+              'theta': data[:,4], 'distance':distance,
+              'ml_intencity':Ml_intencity, 'Stress':effective_sigma, 'K':K}
+
+df = pd.DataFrame(data_union)
+df.to_excel('data\distance_angle/57_output_distance.xlsx')
+
+effective_sigma
