@@ -1,4 +1,3 @@
-#%%
 import cv2
 import numpy as np
 import pandas as pd
@@ -7,10 +6,10 @@ import pandas as pd
 def mouse_callback(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         points.append([x,y])
-        print("마우스 이벤트발생, x:", x, "y:", y, "클릭 :",len(points))
+        print("마우스 이벤트발생, x:", x, "y:", y, "클릭 :",len(points), "Contour N.o.:", (len(points)-1)//9+1)
 
 
-img = cv2.imread('data/distance_angle/angle56.jpg',0)
+img = cv2.imread('data/distance_angle/angle59.jpg',0)
 
 cv2.namedWindow('image')
 cv2.setMouseCallback('image', mouse_callback)
@@ -39,5 +38,5 @@ while(True):
 
 data_union = {'Contour N.o.': number,'y' :y ,'x': x}
 df = pd.DataFrame(data_union)
-df.to_excel('data/distance_angle/좌표.xlsx')
+df.to_excel('data/distance_angle/좌표59.xlsx')
 cv2.destroyAllWindows()
