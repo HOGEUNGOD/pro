@@ -3,7 +3,7 @@ import cv2
 import os
 import matplotlib.pylab as plt
 import pandas as pd
-import fuction
+import fracture
 
 #csv파일 형식 바꾸기!
 
@@ -39,7 +39,7 @@ for file in file_list:
 ml_avg = result - result[0]
 tension_data = np.array(pd.read_csv(path+'/tension.csv', encoding='CP949'))
 time, strain, stress = tension_data[:, 0], tension_data[:, 1]/gauge_length, tension_data[:, 2]/tension_section
-true = fuction.true_ss(stress, strain)
+true = fracture.true_ss(stress, strain)
 frame_endpoint = np.shape(time)[0]
 true_stress, true_strain = true[0], true[1]
 ml_A = np.resize(ml_avg[volt_startframe:], (np.shape(ml_avg[volt_startframe:])[0]//time_proportion+1, time_proportion))[0:frame_endpoint, 0]

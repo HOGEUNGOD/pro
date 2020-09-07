@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import fuction
+import fracture
 
 xl = pd.read_excel('data/astm.xlsx')
 data = np.array(xl)
@@ -11,7 +11,7 @@ print(np.shape(data))
 
 for i in data:
     nuber = i[0]; a = i[4]/10; p = i[8]/1000; b = 0.3; w = 3
-    aa=fuction.CTS(a,w,p,b)
+    aa=fracture.CTS(a,w,p,b)
     aa.k1()
     kk = round(aa.k1())
     y.append(kk)

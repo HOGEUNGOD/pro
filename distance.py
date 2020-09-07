@@ -5,7 +5,7 @@ import numpy as np
 from scipy.spatial.distance import cdist
 import pandas as pd
 import matplotlib.pyplot as plt
-import fuction
+import fracture
 
 read = pd.read_excel('data\distance_angle\input_distance.xlsx')
 read2 = pd.read_csv('data/distance_angle/data.csv', encoding = 'ISO-8859-1')
@@ -36,7 +36,7 @@ for i in data:
     stress_value = tension_stress[idx]
     stress = np.append(stress,stress_value)
     Ml_intencity = np.append(Ml_intencity, value)
-    k = fuction.K_deviator(stress_value, distance_value,theta*np.pi/180)
+    k = fracture.K_deviator(stress_value, distance_value,theta*np.pi/180)
     K= np.append(K,k)
 
 #graph part
