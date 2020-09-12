@@ -42,8 +42,10 @@ def K_deviator(sigma, r, theta_degree):
     K = (sigma * (2 * np.pi * r) ** 0.5)/(np.cos(theta/2)*((1 + 3*np.sin(theta/2) ** 2)**0.5))
     return K
 
-def K_sigma(K,r,theta):
-    # theta = np.deg2rad(theta_degree)
+def K_sigma(K,r_mm,theta_degree):
+    """Unit K:mpa sqrt(m), r : mm , theta_dgree = dgree"""
+    r = r_mm * 0.001
+    theta = np.deg2rad(theta_degree)
     sigma = (K * (np.cos(theta/2)*((1 + 3*np.sin(theta/2) ** 2)**0.5))/((2 * np.pi * r) ** 0.5))
     return sigma
 
