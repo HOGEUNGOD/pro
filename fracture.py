@@ -49,5 +49,5 @@ def K_sigma(K,r_mm,theta_degree):
     sigma = (K * (np.cos(theta/2)*((1 + 3*np.sin(theta/2) ** 2)**0.5))/((2 * np.pi * r) ** 0.5))
     return sigma
 
-K = K_deviator(859.367, 0.00013, 60)
+K = K_deviator(620.1899, 0.000228, 60)
 print(K)

@@ -19,7 +19,7 @@ def main():
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     _, img_bin = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
-    contours, _ = cv2.findContours(img_bin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    contours, abasdf = cv2.findContours(img_bin, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
     for pts in contours:
         if cv2.contourArea(pts) < 400:  #  너무 작으면 무시

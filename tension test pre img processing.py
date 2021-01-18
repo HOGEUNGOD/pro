@@ -8,8 +8,8 @@ import fracture
 #csv파일 형식 바꾸기!
 
 """setting values"""
-path = 'G:/experiment data/aluminum/2020-04-17/1/img'
-path_save= 'G:/experiment data/aluminum/2020-04-17/1'
+path = 'E:\experiment data\concerete/0.1mmsec_UVoFF_300N/img'
+path_save= 'E:\experiment data\concerete/0.1mmsec_UVoFF_300N/'
 tension_section = 18
 gauge_length = 20
 time_proportion = 6
