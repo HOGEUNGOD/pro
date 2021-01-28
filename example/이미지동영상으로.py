@@ -5,7 +5,7 @@ from PIL import Image
 
 print(os.getcwd())
 
-where = "F://20200109 AL//2//good//새 폴더//video"
+where = "E:\experiment data\\aluminum\\2021-01-27\\0.05mmsec_125f_epoxy_dic\\useavi/"
 ##########################################SETTING PATH
 
 os.chdir(where)
