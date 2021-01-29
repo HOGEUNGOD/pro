@@ -5,7 +5,7 @@ from PIL import Image
 
 print(os.getcwd())
 
-where = "E:\experiment data\\aluminum\\2021-01-27\\0.05mmsec_125f_epoxy_dic\\useavi/"
+where = "E:\\experiment data\\aluminum\\2021-01-28\\number1(dic)\\img"
 ##########################################SETTING PATH
 
 os.chdir(where)
