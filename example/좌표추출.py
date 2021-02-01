@@ -9,7 +9,7 @@ def mouse_callback(event, x, y, flags, param):
         print("마우스 이벤트발생, x:", x, "y:", y, "클릭 :",len(points), "Contour N.o.:", (len(points)-1)//9+1)
 
 
-img = cv2.imread('data/distance_angle/angle56.jpg',0)
+img = cv2.imread('../data/distance_angle/angle56.jpg', 0)
 
 cv2.namedWindow('image')
 cv2.setMouseCallback('image', mouse_callback)

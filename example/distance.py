@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import fracture
 
 read = pd.read_excel('data\distance_angle\input_distance.xlsx')
-read2 = pd.read_csv('data/distance_angle/data.csv', encoding = 'ISO-8859-1')
-im =np.array(cv2.imread('data/distance_angle/ff000057.jpg', cv2.IMREAD_GRAYSCALE ))/255
+read2 = pd.read_csv('../data/distance_angle/data.csv', encoding ='ISO-8859-1')
+im = np.array(cv2.imread('../data/distance_angle/ff000057.jpg', cv2.IMREAD_GRAYSCALE)) / 255
 
 
 
