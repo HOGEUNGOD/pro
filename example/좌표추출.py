@@ -40,3 +40,7 @@ data_union = {'Contour N.o.': number,'y' :y ,'x': x}
 df = pd.DataFrame(data_union)
 # df.to_excel('data/distance_angle/60크랙팁.xlsx')
 cv2.destroyAllWindows()
+l ^ 2 * ((a11 * l ^ 2) / (l ^ 4 + 2 * l ^ 2 * m ^ 2 + m ^ 4) + (a12 * m ^ 2) / (
+            l ^ 4 + 2 * l ^ 2 * m ^ 2 + m ^ 4)) + m ^ 2 * (
+            (a12 * l ^ 2) / (l ^ 4 + 2 * l ^ 2 * m ^ 2 + m ^ 4) + (a22 * m ^ 2) / (
+                l ^ 4 + 2 * l ^ 2 * m ^ 2 + m ^ 4)) + (a66 * l ^ 2 * m ^ 2) / (l ^ 4 + 2 * l ^ 2 * m ^ 2 + m ^ 4)
