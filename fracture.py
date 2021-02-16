@@ -49,5 +49,40 @@ def K_sigma(K,r_mm,theta_degree):
     sigma = (K * (np.cos(theta/2)*((1 + 3*np.sin(theta/2) ** 2)**0.5))/((2 * np.pi * r) ** 0.5))
     return sigma
 
-K = K_deviator(859.367, 0.00013, 60)
-print(K)
+
+class Plastic_zone:
+    def __init__(self, theta, K1, yeild_strenth):
+        self.theta = theta
+        self.K1 = K1
+        self.yeild_s = yeild_strenth
+        self.von = []
+        self.tera = []
+
+    def von_mises(self):
+        von_mises = (1+np.cos(self.theta)+1.5*np.sin(self.theta)**2)*(1/(4*np.pi)*(self.K1/self.yeild_s)**2)
+        self.von = von_mises
+        von_mises_0 = (1 + np.cos(0) + 1.5 * np.sin(0) ** 2) * (1 / (4 * np.pi) * (self.K1 / self.yeild_s) ** 2)
+        return von_mises,von_mises_0
+
+    def tresca(self):
+        tresca = self.K1**2/(2*np.pi*self.yeild_s**2)*(np.cos(self.theta/2)*(1+np.sin(self.theta/2)))**2
+        tresca_0 = self.K1 ** 2 / (2 * np.pi * self.yeild_s ** 2) * (np.cos(0 / 2) * (1 + np.sin(0 / 2))) ** 2
+        self.tera = tresca
+        return tresca, tresca_0
+
+    def graph(self):
+        fig = plt.figure()
+        ax = fig.add_subplot(projection="polar")
+        ax.axis('on')
+        ax.plot(self.theta, self.von_mises()[0], color="tab:blue", lw=3, label="tresca")
+        ax.plot(self.theta, self.tresca()[0], color="tab:red", ls="--", lw=3, label="von mises")
+        ax.tick_params(grid_color="white")
+        plt.show()
+
+import matplotlib.pyplot as plt
+import numpy as np
+theta = np.arange(0, 2*np.pi, .01)[1:]
+pz = Plastic_zone(theta, 1211, 503)
+pz.von_mises()
+pz.graph()
+
