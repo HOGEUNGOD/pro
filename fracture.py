@@ -51,8 +51,10 @@ def K_sigma(K,r_mm,theta_degree):
 
 
 class Plastic_zone:
-    def __init__(self, theta, K1, yeild_strenth):
-        self.theta = theta
+    """input Stress intensity factor, Yeild_strenth """
+    def __init__(self, K1, yeild_strenth):
+        import numpy as np
+        self.theta = np.arange(0, 2*np.pi, .01)[1:]
         self.K1 = K1
         self.yeild_s = yeild_strenth
         self.von = []
@@ -71,6 +73,7 @@ class Plastic_zone:
         return tresca, tresca_0
 
     def graph(self):
+        import matplotlib.pyplot as plt
         fig = plt.figure()
         ax = fig.add_subplot(projection="polar")
         ax.axis('on')
@@ -79,10 +82,5 @@ class Plastic_zone:
         ax.tick_params(grid_color="white")
         plt.show()
 
-import matplotlib.pyplot as plt
-import numpy as np
-theta = np.arange(0, 2*np.pi, .01)[1:]
-pz = Plastic_zone(theta, 1211, 503)
-pz.von_mises()
-pz.graph()
+
 
