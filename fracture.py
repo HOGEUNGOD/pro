@@ -86,10 +86,7 @@ def effective_strain(strain1, strain2, strain12):
     strain23, strain31 = 0,0
     result = 2 / (3 * 2**0.5) * ((strain1 - strain2)**2 + (strain2 - strain3)**2 +(strain3-strain1)**2 + 6*strain23**2 + 6*strain31**2 + 6*strain12**2)**0.5
     return result
-strain1 = np.array([[1],[2],[3]])
-strain2 = np.array([[1],[2],[3]])*2
-strain12 = np.array([[1],[2],[3]])*3
-effective_strain(strain1, strain2, strain12)
+
 
 
 
