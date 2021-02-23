@@ -150,17 +150,6 @@ def Williams_sigmayy(r, theta):
     return [K1_coefficient, K2_coefficient]
 
 def cart2pol(x, y):
-    rho = np.sqrt(x**2 + y**2)
-    phi = np.arctan2(y, x)
-    degree = math.degrees(phi)
-    return(rho, degree)
-
-def pol2cart(rho, phi):
-    x = rho * np.cos(phi)
-    y = rho * np.sin(phi)
-    return(x, y)
-
-def cart2pol(x, y):
     """out put : dgree, rho"""
     rho = np.sqrt(x**2 + y**2)
     phi = np.arctan2(y, x)
