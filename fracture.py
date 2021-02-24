@@ -64,13 +64,13 @@ class Plastic_zone:
         von_mises = (1+np.cos(self.theta)+1.5*np.sin(self.theta)**2)*(1/(4*np.pi)*(self.K1/self.yeild_s)**2)
         self.von = von_mises
         von_mises_0 = (1 + np.cos(0) + 1.5 * np.sin(0) ** 2) * (1 / (4 * np.pi) * (self.K1 / self.yeild_s) ** 2)
-        return von_mises,von_mises_0
+        return von_mises,self.theta, von_mises_0
 
     def tresca(self):
         tresca = self.K1**2/(2*np.pi*self.yeild_s**2)*(np.cos(self.theta/2)*(1+np.sin(self.theta/2)))**2
         tresca_0 = self.K1 ** 2 / (2 * np.pi * self.yeild_s ** 2) * (np.cos(0 / 2) * (1 + np.sin(0 / 2))) ** 2
         self.tera = tresca
-        return tresca, tresca_0
+        return tresca,self.theta ,tresca_0
 
     def graph(self):
         fig = plt.figure()
@@ -79,6 +79,7 @@ class Plastic_zone:
         ax.plot(self.theta, self.von_mises()[0], color="tab:blue", lw=3, label="tresca")
         ax.plot(self.theta, self.tresca()[0], color="tab:red", ls="--", lw=3, label="von mises")
         ax.tick_params(grid_color="white")
+        plt.setp(ax.yaxis.get_ticklabels(), visible=False)
         plt.show()
 
 def effective_strain(strain1, strain2, strain12):
