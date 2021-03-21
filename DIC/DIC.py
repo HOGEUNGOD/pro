@@ -9,8 +9,10 @@ from scipy.spatial import distance
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import glob
+import fracture
 
-def make_mask(path, num):
+def make_mask(path):
     class PolygonDrawer(object):
         def __init__(self, window_name):
             self.window_name = window_name # Name for our window
@@ -44,7 +46,7 @@ def make_mask(path, num):
             while(not self.done):
                 # This is our drawing loop, we just continuously draw new images
                 # and show them in the named window
-                canvas = image
+                canvas = images[i]
                 if (len(self.points) > 0):
                     # Draw all the current polygon segments
                     cv2.polylines(canvas, np.array([self.points]), False, (255, 255, 255), 1)
@@ -56,7 +58,7 @@ def make_mask(path, num):
                 if cv2.waitKey(50) == 27: # ESC hit
                     self.done = True
             # User finised entering the polygon points, so let's make the final drawing
-            canvas = image
+            canvas = images[i]
             # of a filled polygon
             if (len(self.points) > 0):
                 cv2.fillPoly(canvas, np.array([self.points]), (255, 255, 255))
@@ -68,62 +70,76 @@ def make_mask(path, num):
             cv2.destroyWindow(self.window_name)
             return canvas, self.points
 
-    file_list = os.listdir(path)
-    img = [file for file in file_list if file.endswith(".jpg")]
-    image = cv2.imread(path+'/'+img[num], cv2.IMREAD_GRAYSCALE)
+    # file_list = os.listdir(path)
+    # img = [file for file in file_list if file.endswith(".jpg")]
+    # image = cv2.imread(path+'/'+img[num], cv2.IMREAD_GRAYSCALE)
+    images = load_file(path,flip='')
 
-    if image is None:
-        print('Image load failed!')
-        sys.exit()
-    x, y, w, h = cv2.selectROI(image)
-    cv2.destroyAllWindows()
+    # if image is None:
+    #     print('Image load failed!')
+    #     sys.exit()
+    for i in images:
+        x, y, w, h = cv2.selectROI(images[i])
+        cv2.destroyAllWindows()
 
-    cv2.rectangle(image, (x,y), (x+w,y+h),(0,0,0),2)
-    CANVAS_SIZE = np.shape(image)
+        cv2.rectangle(images[i], (x,y), (x+w,y+h),(0,0,0),2)
+        CANVAS_SIZE = np.shape(images[i])
 
-    poly = PolygonDrawer("Polygon")
-    _, poly_points = poly.run()
+        poly = PolygonDrawer("Polygon")
+        _, poly_points = poly.run()
 
-    ##mask part
-    mask = np.zeros(np.shape(image))
-    mask[y:y+h, x:x+w] = 255
-    cv2.fillPoly(mask, np.array([poly_points]), (0,0,0))
-    cv2.imshow('mask', mask)
+        ##mask part
+        mask = np.zeros(np.shape(images[i]))
+        mask[y:y+h, x:x+w] = 255
+        cv2.fillPoly(mask, np.array([poly_points]), (0,0,0))
+        cv2.imshow('mask', mask)
 
-    #%% save part
-    cv2.imwrite(path+'/'+str(num)+'.png',mask)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
-    return x, y ,w ,h
+        #%% save part
+        cv2.imwrite(path+'/'+str(i)+'_mask.png',mask)
+        cv2.waitKey()
+        cv2.destroyAllWindows()
+    return
 
 class Crack_tip():
-    def __init__(self, ratio):
+    def __init__(self, ratio, key, initial_crack, thickness, width):
         """ x, y 는 좌표, point 는 리스트로 x,y좌표 모아줌, count는 좌표 몇개, 길이, 1픽셀당 mm(mm/1픽셀)"""
+        self.B = thickness
+        self.W = width
         self.x = 0
         self.y =0
+        self.inital_crack = initial_crack
         self.point = []
         self.count= -1
         self.length = 0
         self.ratio = ratio
-        self.df = pd.DataFrame(index = range(0,3), columns=['index', 'length',  'length(add)', 'x', 'y'])
+        self.df = pd.DataFrame(index = [i for i in key], columns=['length(mm)',  'length(add)(mm)', 'x', 'y', 'Load(N)','ASTM_E399(K)'])
+
+        self.key= list(key)
         return
 
-    def inital(self, x, y):
+    def __inital__(self, x, y, load):
         self.x = x
         self.y= y
-        self.point.append([[x,y]])
-        self.df.loc[0] = [self.count+1, 0 , 0 , x, y]
+        self.point.append([x,y])
+        self.df.loc[self.key[0]] = [self.inital_crack ,self.inital_crack , x, y,
+                                    load, ASTM_E399(load*0.001,self.inital_crack*0.1,self.B*0.1,self.W*0.1)]
+
         self.count +=1
 
 
-    def append(self, x, y):
-        self.x =x
-        self.y= y
-        self.point.append([[x,y]])
-        self.count +=1
-        self.length = distance.cdist(self.point[self.count-1], self.point[self.count]) * self.ratio
-        self.df.loc[self.count] = [self.count, self.length ,self.length + self.df["length(add)"][self.count-1], x, y]
+    def append(self, x, y, load):
+        if self.count == -1:
+            self.__inital__(x,y,load)
+        else:
+            self.x =x
+            self.y= y
+            self.point.append([x,y])
+            self.count +=1
 
+            self.length = distance.cdist([self.point[self.count-1]], [self.point[self.count]]) * self.ratio
+            self.df.loc[self.key[self.count]] = [ self.length[0][0] ,self.length[0][0] + self.df["length(add)(mm)"][self.count-1], x, y,
+                                                  load, ASTM_E399(load*0.001, (self.length + self.df["length(add)(mm)"][self.count-1])[0][0]*0.1,self.B*0.1,self.W*0.1)]
+            print(type((self.length + self.df["length(add)(mm)"][self.count-1])[0][0]))
     def position(self):
         return self.point
 
@@ -165,14 +181,14 @@ def pol2cart(rho, degree):
     out = np.hstack((x, y))
     return out
 
-def circle_location(radius, ratio):
+def circle_location(radius, ratio, degree, rotate_degree=0):
     """
-    첫번째 원점에서 떨어져있는 값 radius 반지름길이임
+    첫번째 원점에서 떨어져있는 값 radius 반지름길이임 (픽셀단위)
     예상각도 수정하고 싶으면 np.arrange 안에 각도 바꿔주면됨
     ratio : mm/pixel , output mm
     x , y 좌표 , rad, theta(degree)
    """
-    degree = np.arange(-90, 90+10 ,10)
+    degree = np.arange(-1*degree+rotate_degree, rotate_degree+degree+5 ,5)
     degree = degree.reshape([-1,1])
     rho = np.ones([degree.shape[0],1]) * radius
     xy = pol2cart(rho, degree).round()
@@ -192,10 +208,9 @@ def find_zone(array):
     result = array[y_min:y_max, x_min:x_max]
     return result
 
-def u_f1(r, theta):
+def u_f1(n, r, theta):
     shear_modulus = 26900 #unit:mpa
     poisson_ratio = 0.33
-    n = 1
     theta = np.deg2rad(theta)
     plane_stress= (3 - poisson_ratio)/(1 + poisson_ratio)
     plane_strain = 3 - 4 * poisson_ratio
@@ -203,10 +218,9 @@ def u_f1(r, theta):
     result = r**(n/2) * (plane_stress + n/2 + (-1)**n * np.cos(n/2 * theta) - n/2*np.cos((n/2 - 2) * theta)) / (2 * shear_modulus)
     return result
 
-def u_f2(r, theta):
+def u_f2(n, r, theta):
     shear_modulus = 26900 #unit:mpa
     poisson_ratio = 0.33
-    n = 1
     theta = np.deg2rad(theta)
     plane_stress= (3 - poisson_ratio)/(1 + poisson_ratio)
     plane_strain = 3 - 4 * poisson_ratio
@@ -214,10 +228,9 @@ def u_f2(r, theta):
     result = r**(n/2) * (plane_stress + n/2 -(-1)**n * np.sin(n/2*theta) - 0.5*n*np.sin((n/2-2)*theta)) / (2 * shear_modulus)
     return result
 
-def v_f1(r, theta):
+def v_f1(n, r, theta):
     shear_modulus = 26900 #unit:mpa
     poisson_ratio = 0.33
-    n = 1
     theta = np.deg2rad(theta)
     plane_stress= (3 - poisson_ratio)/(1 + poisson_ratio)
     plane_strain = 3 - 4 * poisson_ratio
@@ -225,10 +238,9 @@ def v_f1(r, theta):
     result = r**(n/2) * (plane_stress - n/2 -(-1)**n * np.sin(n/2 * theta) + n/2*np.sin((n/2 -2)*theta)) / (2 * shear_modulus)
     return result
 
-def v_f2(r, theta):
+def v_f2(n, r, theta):
     shear_modulus = 26900 #unit:mpa
     poisson_ratio = 0.33
-    n = 1
     theta = np.deg2rad(theta)
     plane_stress= (3 - poisson_ratio)/(1 + poisson_ratio)
     plane_strain = 3 - 4 * poisson_ratio
@@ -236,3 +248,17 @@ def v_f2(r, theta):
     result = r**(n/2) * (-1 * plane_stress + n/2 -(-1)**n * np.cos(n/2 *theta) - 0.5*n*np.cos((n/2 - 2)  * theta)) / (2 * shear_modulus)
     return result
 
+def load_file(path, flip = 'None'):
+    """ 폴더에 들어간 순서대로 이미지 추가 Dict형태 좌우 반전시 flip = 'flip' 사용"""
+    files = glob.glob(path+'./*.jpg')
+    if not files:
+        print("Chck Phath")
+        sys.exit()
+    img = {}
+    for i in files:
+        im = cv2.imread(i, cv2.IMREAD_GRAYSCALE)
+        name = os.path.split(os.path.splitext(i)[0])[-1]
+        if flip == 'flip':
+            im = cv2.flip(im, 1)
+        img.setdefault('%s'%name,im)
+    return img
