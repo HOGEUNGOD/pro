@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 
 
-src = cv2.imread('cells.png', cv2.IMREAD_GRAYSCALE)
+src = cv2.imread(r'E:\experiment data\aluminum\2021-03-19\2_1resoltech\analysis\img\ff0001.jpg', cv2.IMREAD_GRAYSCALE)
 
 if src is None:
     print('Image load failed!')
