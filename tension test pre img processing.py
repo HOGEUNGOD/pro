@@ -9,60 +9,38 @@ import fracture
 #csv파일 형식 바꾸기!
 
 """setting values"""
-path = r'E:\experiment data\aluminum\2021-03-19\2_1resoltech\ml'
-path_save= r'E:\experiment data\aluminum\2021-03-19\2_1resoltech\ml'
+path = r'E:\experiment data\aluminum\2020-04-17\1\img'
+path_save= r'E:\experiment data\aluminum\2020-04-17\1'
 tension_section = 18
 gauge_length = 25
 
 
 #part2 , location must be x1<x2, y1<y2
 
-# slice_x1 = 135
-# slice_x2 = 192
-# slice_y1 = 245
-# slice_y2 = 323
-w, h= 80,40
+slice_x1 = 119
+slice_x2 = 224
+slice_y1 = 470
+slice_y2 = 767
 
 file_list = os.listdir(path)
 count = 0
 result = []
-crack_tip = np.array(
-            [[110,300],
-             [110,300],
-             [110,298],
-             [110,298],
-             [110,297],
-             [110,295],
-             [109,295],
-             [109,294],
-             [108,293],
-             [110,291],
-             [109,291],
-             [109,290],
-             [108,288],
-             [109,288],
-             [110,286],
-             [109,287],
-             [108,285],
-             [108,285],
-             [109,283],
-             [107,284],
-             [108,281],
-             [108,281],
-             [108,281]])
-print(crack_tip[count][1]-h,crack_tip[count][1]+h)
-print(crack_tip[count][0],crack_tip[count][0]+w)
+file='z003455.jpg'
+im = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)[:900,175]
+plt.figure(figsize=(5,10))
+plt.hlines(-557, 0,150,colors='red',label='Crack line')
+plt.xlim(40,110)
+plt.plot(im,np.arange(len(im))*-1,label='Ml')
+plt.legend()
+plt.savefig(path_save+'/fig.png')
+plt.show()
+#%%
 
 for file in file_list:
     if file.endswith(".jpg"):
         im = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)/255
         im_calculate = np.array(im)
-        y1 = crack_tip[count][1] - h
-        y2 =crack_tip[count][1] + h
-        x1 = crack_tip[count][0]
-        x2= crack_tip[count][0]+w
-        print(y1,y2,x1,x2)
-        img_box = im_calculate[y1:y2, x1:x2]
+        img_box = im_calculate[slice_y1:slice_y2, slice_x1:slice_x2]
 
         ave = np.average(img_box)
         result = np.append(result, [ave])
@@ -74,8 +52,8 @@ ml_a = result - result[0]
 #%%
 
 plt.plot(np.arange(len(ml_a)),ml_a+result[0])
-plt.xlim(7,)
-# plt.ylim(0.35,0.37)
+
+plt.xlim(0,5594)
 plt.show()
 # #%%
 # tension_data = np.array(pd.read_csv(path+'/tension.csv', encoding='CP949'))

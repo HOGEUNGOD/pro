@@ -70,6 +70,15 @@ def generate_video():
         video.write(cv2.imread(os.path.join(image_folder, image)))
 
 
+
+
+
+
+
+
+
+
+
     cv2.destroyAllWindows()
     video.release()
 
@@ -123,6 +132,6 @@ def video_to_frames(input_loc, output_loc):
 
 if __name__=="__main__":
 
-    input_loc = r'E:\experiment data\aluminum\2021-01-12\0.1mmsec_UVon_ND4_NO3/img/Trim.mp4'
-    output_loc =  r'E:\experiment data\aluminum\2021-01-12\0.1mmsec_UVon_ND4_NO3/img/'
+    input_loc = r'E:\experiment data\aluminum\2021-03-25\1_Mobile/Trim.mp4'
+    output_loc =  r'E:\experiment data\aluminum\2021-03-25\1_Mobile/img/'
     video_to_frames(input_loc, output_loc)
