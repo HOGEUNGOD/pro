@@ -9,32 +9,22 @@ import fracture
 #csv파일 형식 바꾸기!
 
 """setting values"""
-path = r'E:\experiment data\aluminum\2020-04-17\1\img'
-path_save= r'E:\experiment data\aluminum\2020-04-17\1'
+path = r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img\ff_S0001'
+path_save= r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img'
 tension_section = 18
 gauge_length = 25
 
 
 #part2 , location must be x1<x2, y1<y2
 
-slice_x1 = 119
-slice_x2 = 224
-slice_y1 = 470
-slice_y2 = 767
+slice_x1 = 100
+slice_x2 = 120
+slice_y1 = 404
+slice_y2 = 580
 
 file_list = os.listdir(path)
 count = 0
 result = []
-file='z003455.jpg'
-im = cv2.imread(os.path.join(path, file), cv2.IMREAD_GRAYSCALE)[:900,175]
-plt.figure(figsize=(5,10))
-plt.hlines(-557, 0,150,colors='red',label='Crack line')
-plt.xlim(40,110)
-plt.plot(im,np.arange(len(im))*-1,label='Ml')
-plt.legend()
-plt.savefig(path_save+'/fig.png')
-plt.show()
-#%%
 
 for file in file_list:
     if file.endswith(".jpg"):
@@ -46,14 +36,15 @@ for file in file_list:
         result = np.append(result, [ave])
         count += 1
         print(np.shape(im_calculate), count, ave)
-
-ml_a = result - result[0]
+#%%
+ml_a = result
 
 #%%
-
+path_save= r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img'
 plt.plot(np.arange(len(ml_a)),ml_a+result[0])
+plt.xlim(0,16800)
+plt.savefig(path_save+'/strain_ml.png', dpi = 300)
 
-plt.xlim(0,5594)
 plt.show()
 # #%%
 # tension_data = np.array(pd.read_csv(path+'/tension.csv', encoding='CP949'))
