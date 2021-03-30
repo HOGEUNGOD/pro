@@ -9,18 +9,17 @@ import fracture
 #csv파일 형식 바꾸기!
 
 """setting values"""
-path = r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img\ff_S0001'
-path_save= r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img'
+path = r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img'
+path_save= r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\ML_STRESS'
 tension_section = 18
 gauge_length = 25
 
 
 #part2 , location must be x1<x2, y1<y2
-
-slice_x1 = 100
-slice_x2 = 120
-slice_y1 = 404
-slice_y2 = 580
+slice_x1 = 96
+slice_x2 = 110
+slice_y1 = 500
+slice_y2 = 633
 
 file_list = os.listdir(path)
 count = 0
@@ -37,23 +36,16 @@ for file in file_list:
         count += 1
         print(np.shape(im_calculate), count, ave)
 #%%
+
 ml_a = result
 
-#%%
-path_save= r'E:\experiment data\aluminum\2021-03-25\faruv_tension_2\img'
-plt.plot(np.arange(len(ml_a)),ml_a+result[0])
-plt.xlim(0,16800)
-plt.savefig(path_save+'/strain_ml.png', dpi = 300)
-
-plt.show()
-# #%%
-# tension_data = np.array(pd.read_csv(path+'/tension.csv', encoding='CP949'))
-# time, strain, stress = tension_data[:, 0], tension_data[:, 6], tension_data[:, 5]/tension_section
+tension_data = np.array(pd.read_csv(path+'/tension.csv', encoding='CP949'))
+time, strain, stress = tension_data[:, 0], tension_data[:, 4]*20, tension_data[:, 3]*3000
 # true = fracture.true_ss(stress, strain)
 # frame_endpoint = np.shape(time)[0]
 # true_stress, true_strain = true[0], true[1]
-#
-#
+
+
 #
 # data = {'time': time, 'strain': strain, 'stress': stress,
 #         'true_strain': true_strain, 'true_stress': true_stress,
@@ -66,31 +58,37 @@ plt.show()
 # # ml_avg = savgol_filter(ml_a[:9438],2001,1)
 # ml_avg = ml_a[:9438]
 # #graph part
-# #############
-# fig, ax = plt.subplots()
-# ax1 = ax.twinx()
-# ax.set_xlabel('displacements')
-# ax.set_ylabel('ml_avg A.U.')
-# ax1.set_ylabel('stress')
-# line1 = ax.plot(strain[:9438], stress[:9438], color='b', label="STRESS")
-# line2 = ax1.plot(strain[:9438], ml_avg[:9438], color='r', label="ML(A.U.)")
-# lines = line1 + line2
-# labels = [l.get_label() for l in lines]
-# ax.legend(lines, labels, loc=0)
-# ax.grid()
-# fig.savefig(path_save+'/graph.png', dpi = 300)
-#
-# fig, ax2 = plt.subplots()
-# ax2.plot(stress[:9438], ml_avg[:9438],c ='black')
-# ax2.grid()
-# ax2.set_xlabel('stress')
-# ax2.set_ylabel('ML A.U')
-# fig.savefig(path_save+'/stress_ml.png', dpi = 300)
-#
-# fig, ax3 = plt.subplots()
-# ax3.plot(strain[:9438], ml_avg[:9438],c = 'black')
-# ax3.grid()
-# ax3.set_xlabel('displacemnets')
-# ax3.set_ylabel('ML A.U')
-# fig.savefig(path_save+'/strain_ml.png', dpi = 300)
+#############
+ml_avg = ml_a
+
+fig, ax = plt.subplots()
+ax1 = ax.twinx()
+ax.set_xlabel('time')
+ax.set_ylabel('Stress')
+ax1.set_ylabel('ml_avg A.U.')
+line1 = ax.plot(time, stress, color='b', label="STRESS")
+line2 = ax1.plot(time, ml_avg, color='r', label="ML(A.U.)")
+lines = line1 + line2
+labels = [l.get_label() for l in lines]
+ax.set_xlim(0,16700)
+ax1.set_ylim(0.34, 0.425)
+ax.legend(lines, labels, loc=0)
+ax.grid()
+fig.savefig(path_save+'/graph.png', dpi = 300)
+plt.show()
+
+
+fig, ax2 = plt.subplots()
+ax2.plot(stress, ml_avg,c ='black')
+ax2.grid()
+ax2.set_xlabel('stress')
+ax2.set_ylabel('ML A.U')
+fig.savefig(path_save+'/stress_ml.png', dpi = 300)
+
+fig, ax3 = plt.subplots()
+ax3.plot(strain, ml_avg,c = 'black')
+ax3.grid()
+ax3.set_xlabel('displacemnets')
+ax3.set_ylabel('ML A.U')
+fig.savefig(path_save+'/strain_ml.png', dpi = 300)
 

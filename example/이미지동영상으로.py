@@ -183,6 +183,6 @@ def video_to_frames(input_loc, output_loc):
 
 if __name__=="__main__":
 
-    input_loc = r'E:\experiment data\aluminum\2021-03-26/trim.mp4'
-    output_loc =  r'E:\experiment data\aluminum\2021-03-26\image'
+    input_loc = r'E:\experiment data\aluminum\2021-03-30\1_mobile/trim.mp4'
+    output_loc =  r'E:\experiment data\aluminum\2021-03-30\1_mobile/'
     video_to_frames(input_loc, output_loc)
