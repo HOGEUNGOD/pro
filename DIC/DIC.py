@@ -256,7 +256,7 @@ def load_file(path, flip = 'None'):
         sys.exit()
     img = {}
     for i in files:
-        im = cv2.imread(i, cv2.IMREAD_GRAYSCALE)
+        im = cv2.imread(i)
         name = os.path.split(os.path.splitext(i)[0])[-1]
         if flip == 'flip':
             im = cv2.flip(im, 1)

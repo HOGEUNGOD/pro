@@ -137,6 +137,8 @@ if __name__=="__main__":
     video_to_frames(input_loc, output_loc)
 
 #%%
+"""동영상 이미지로"""
+
 import cv2
 import time
 import os
@@ -186,3 +188,19 @@ if __name__=="__main__":
     input_loc = r'E:\experiment data\aluminum\2021-03-30\1_mobile/trim.mp4'
     output_loc =  r'E:\experiment data\aluminum\2021-03-30\1_mobile/'
     video_to_frames(input_loc, output_loc)
+
+#%% 이미지 크롭
+import cv2
+import DIC.DIC as dic
+import numpy as np
+
+path = r'G:\AL IMAGE\1mm_CTS_UVoff_mobile'
+save_path = r'G:\AL IMAGE\1mm_CTS_UVoff_mobile'
+
+image = dic.load_file(path)
+
+for key in image:
+    value=image[key][1466:2576, 3700:5000]
+    print('%s'%key)
+    cv2.imwrite(save_path+'/crop%s.jpg'%key, value)
+
