@@ -45,24 +45,27 @@ ml_avg = ml_a - result[0]
 from scipy.signal import savgol_filter
 tension_data = np.array(pd.read_csv(path+'/tension.csv', encoding='CP949'))
 
-time, strain, stress = tension_data[:, 0], tension_data[:, 4], tension_data[:, 3]*3000/18
-ml_k = ml_a[:12750] - result[0]
-time = time[:12750]
-stress = stress[:12750]
-strain = strain[:16750]
-
+time, strain, stress = tension_data[:, 0], tension_data[:, 4]*10/25, tension_data[:, 3]*3000/18
+ml_k = ml_a[:11750] - result[0]
+time = time[:11750]
+stress = stress[:11750]
+strain = strain[:11750]
+stress = savgol_filter(stress,201,1)
+strain = savgol_filter(strain,201,1)
 ml_avg = savgol_filter(ml_k,6001,1)
+# stress, strain=fracture.true_ss(stress,strain)
+
 #############
 fig, ax = plt.subplots()
 ax1 = ax.twinx()
-ax.set_xlabel('time')
-ax.set_ylabel('ml_avg A.U.')
-ax1.set_ylabel('stress(Mpa)')
-line1 = ax.plot(time, ml_avg, color='b', label="ML")
-line2 = ax1.plot(time, stress, color='r', label="Stress")
+ax.set_xlabel('true strain')
+ax.set_ylabel('ml')
+ax1.set_ylabel('true stress')
+line1 = ax.plot(strain, ml_avg, color='b', label="ml")
+line2 = ax1.plot(strain, stress, color='r', label="true stress")
 lines = line1 + line2
 labels = [l.get_label() for l in lines]
-ax.legend(lines, labels, loc=0)
+ax.legend(lines, labels, loc=4)
 ax.grid()
 fig.savefig(path_save+'/graph.png', dpi = 300)
 plt.show()
@@ -70,7 +73,7 @@ plt.show()
 fig, ax2 = plt.subplots()
 ax2.plot(stress, ml_avg,c ='black')
 ax2.grid()
-ax2.set_xlabel('stress')
+ax2.set_xlabel('true stress')
 ax2.set_ylabel('ML A.U')
 fig.savefig(path_save+'/stress_ml.png', dpi = 300)
 plt.show()
@@ -80,6 +83,12 @@ plt.show()
 # ax3.set_xlabel('displacemnets')
 # ax3.set_ylabel('ML A.U')
 # fig.savefig(path_save+'/strain_ml.png', dpi = 300)
+
+
+
 #%%
-b = np.hstack((stress.reshape(-1,1),ml_avg.reshape(-1,1)))
+b = np.hstack((np.hstack((strain.reshape(-1,1),stress.reshape(-1,1))),ml_avg.reshape(-1,1)))
 np.savetxt(path_save+'/stress_ml.csv',b)
+print('hi')
+#%%
+print(strain[-1])

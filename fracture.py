@@ -82,12 +82,35 @@ class Plastic_zone:
         plt.setp(ax.yaxis.get_ticklabels(), visible=False)
         plt.show()
 
+def strain_z_calculation(poisson_ratio, strain_x, strain_y):
+    result = -1 * poisson_ratio *(strain_x+strain_y)/(1-poisson_ratio)
+    return result
+
+def effective_strain_z(poisson_ratio, strain_x, strain_y, strain_xy):
+    strain_z = strain_z_calculation(poisson_ratio,strain_x, strain_y)
+    result = 2 * np.sqrt(strain_x**2 + strain_y**2, strain_z**2 - strain_x*strain_y - strain_y*strain_z - strain_y*strain_z + 3*strain_xy**2) / 3
+    return result
+
 def effective_strain(strain1, strain2, strain12):
     strain3 = -(strain1 + strain2)
     strain23, strain31 = 0,0
     result = 2 / (3 * 2**0.5) * ((strain1 - strain2)**2 + (strain2 - strain3)**2 +(strain3-strain1)**2 + 6*strain23**2 + 6*strain31**2 + 6*strain12**2)**0.5
     return result
 
+def cart2pol(x, y):
+    """out put : dgree, rho"""
+    rho = np.sqrt(x**2 + y**2)
+    phi = np.arctan2(y, x)
+    degree = np.rad2deg(phi).reshape([-1,1])
+    out = np. hstack((rho,degree))
+    return out
 
+def pol2cart(rho, degree):
+    """in put : degree, rho"""
+    phi = np.deg2rad(degree).reshape([-1,1])
+    x = rho * np.cos(phi)
+    y = rho * np.sin(phi)
+    out = np.hstack((x, y))
+    return out
 
-
+print('Run complete')
