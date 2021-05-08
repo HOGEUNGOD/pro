@@ -186,9 +186,9 @@ def circle_location(radius, ratio, degree, rotate_degree=0):
     첫번째 원점에서 떨어져있는 값 radius 반지름길이임 (픽셀단위)
     예상각도 수정하고 싶으면 np.arrange 안에 각도 바꿔주면됨
     ratio : mm/pixel , output mm
-    x , y 좌표 , rad, theta(degree)
+    x , y 좌표 , rho, theta(degree)
    """
-    degree = np.arange(-1*degree+rotate_degree, rotate_degree+degree+5 ,5)
+    degree = np.arange(-1*degree+rotate_degree, rotate_degree+degree+1 ,1)
     degree = degree.reshape([-1,1])
     rho = np.ones([degree.shape[0],1]) * radius
     xy = pol2cart(rho, degree).round()

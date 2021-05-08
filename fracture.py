@@ -38,6 +38,8 @@ class CTS:
         k2 = (math.sqrt(self.a * math.pi) * self.p *f2) / (self.w*self.b)
         return k2
 
+
+
 def K_deviator(sigma, r, theta_degree):
     theta = np.deg2rad(theta_degree)
     K = (sigma * (2 * np.pi * r) ** 0.5)/(np.cos(theta/2)*((1 + 3*np.sin(theta/2) ** 2)**0.5))
