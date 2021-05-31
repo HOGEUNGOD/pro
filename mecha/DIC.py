@@ -10,7 +10,7 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import glob
-import fracture
+import mecha.fracture
 
 def make_mask(path):
     class PolygonDrawer(object):
