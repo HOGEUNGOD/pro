@@ -1,16 +1,16 @@
 clear all
 
 clear al
-x = 83
-y = 368
-width = 19 
-hight =19
+x = 200
+y = 440
+width = 25 
+hight = 25
 
 
-r_im = imread('ff_00361.jpg')
+r_im = imread('20210608_223715S00011.jpg')
 r_im_sub = r_im(y:y+hight,x:x+width)
-c_im = imread('ff_05881.jpg')
-c_im_sch = c_im(151:564,69:140)
+c_im = imread('20210608_223718S00011.jpg')
+c_im_sch = c_im(37:570, 89:281)
 
 
 C = normxcorr2(r_im_sub,c_im_sch)
