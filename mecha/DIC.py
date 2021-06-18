@@ -1,5 +1,4 @@
-
-
+from numpy.lib.stride_tricks import as_strided
 import os
 import cv2
 import sys
@@ -11,6 +10,41 @@ import math
 import matplotlib.pyplot as plt
 import glob
 import mecha.fracture
+
+def pool2d(A, kernel_size, stride, pool_mode='max'):
+    '''
+    2D Pooling
+
+    Parameters:
+        A: input 2D array
+        kernel_size: int, the size of the window
+        stride: int, the stride of the window
+        padding: int, implicit zero paddings on both sides of the input
+        pool_mode: string, 'max' or 'avg'
+    '''
+    if pool_mode == 'min':
+        value = A.max()
+    else:
+        value = 0
+    # Padding
+    A = np.pad(A, kernel_size-2 , mode='constant', constant_values=value)
+    print(A)
+    # Window view of A
+    output_shape = ((A.shape[0] - kernel_size)//stride + 1,
+                    (A.shape[1] - kernel_size)//stride + 1)
+    kernel_size = (kernel_size, kernel_size)
+    A_w = as_strided(A, shape = output_shape + kernel_size,
+                        strides = (stride*A.strides[0],
+                                   stride*A.strides[1]) + A.strides)
+    A_w = A_w.reshape(-1, *kernel_size)
+
+    # Return the result of pooling
+    if pool_mode == 'max':
+        return A_w.max(axis=(1,2)).reshape(output_shape)
+    elif pool_mode == 'avg':
+        return A_w.mean(axis=(1,2)).reshape(output_shape)
+    elif pool_mode == 'min':
+        return A_w.min(axis=(1,2)).reshape(output_shape)
 
 def make_mask(path):
     class PolygonDrawer(object):
