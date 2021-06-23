@@ -28,7 +28,7 @@ def pool2d(A, kernel_size, stride, pool_mode='max'):
         value = 0
     # Padding
     A = np.pad(A, kernel_size-2 , mode='constant', constant_values=value)
-    print(A)
+
     # Window view of A
     output_shape = ((A.shape[0] - kernel_size)//stride + 1,
                     (A.shape[1] - kernel_size)//stride + 1)
