@@ -40,11 +40,11 @@ def pool2d(A, kernel_size, stride, pool_mode='max'):
 
     # Return the result of pooling
     if pool_mode == 'max':
-        return A_w.max(axis=(1,2)).reshape(output_shape)
+        return A_w.max(axis=(1,2)).reshape(output_shape)[1:-1,1:-1]
     elif pool_mode == 'avg':
-        return A_w.mean(axis=(1,2)).reshape(output_shape)
+        return A_w.mean(axis=(1,2)).reshape(output_shape)[1:-1,1:-1]
     elif pool_mode == 'min':
-        return A_w.min(axis=(1,2)).reshape(output_shape)
+        return A_w.min(axis=(1,2)).reshape(output_shape)[1:-1,1:-1]
 
 def make_mask(path):
     class PolygonDrawer(object):
