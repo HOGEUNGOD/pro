@@ -1,19 +1,14 @@
 clear all
 
 clear al
-x = 200
-y = 440
-width = 25 
-hight = 25
+
+c_im = imread('./data/ff000001.jpg')
+c_im_sub = c_im
+r_im = imread('./data/ff000001.jpg')
+r_im_sub = r_im(297:309, 54:65)
 
 
-r_im = imread('20210608_223715S00011.jpg')
-r_im_sub = r_im(y:y+hight,x:x+width)
-c_im = imread('20210608_223718S00011.jpg')
-c_im_sch = c_im(37:570, 89:281)
-
-
-C = normxcorr2(r_im_sub,c_im_sch)
+C = normxcorr2(r_im_sub,c_im_sub)
 [ypeak,xpeak]=find(C==max(C(:)))
 max_corr = max(C(:))
 yoffset = ypeak-size(r_im_sub,1)
