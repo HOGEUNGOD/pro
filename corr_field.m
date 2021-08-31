@@ -1,11 +1,11 @@
 clear all
 
-
-reference = imread('./data/ff000001.jpg');
-deformed = imread('./data/ff000009.jpg');
-reference_roi = reference(368:384, 100:116)
+reference = imread('./data/num_00001.jpg');
+deformed = imread('./data/num_08002.jpg');
+%deformed = deformed(210:458, 52:158)
+reference_roi = reference(367-2:386-2, 111:129)
 montage({reference_roi,deformed})
-%% 
+
 
 c = normxcorr2(reference_roi,deformed);
 max_corr = max(c(:))
