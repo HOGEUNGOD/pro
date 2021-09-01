@@ -2,8 +2,8 @@ clear all
 
 reference = imread('./data/num_00001.jpg');
 deformed = imread('./data/num_08002.jpg');
-%deformed = deformed(210:458, 52:158)
-reference_roi = reference(367-2:386-2, 111:129)
+deformed = deformed(200:458, 10:220)
+reference_roi = reference(367-2:386-2, 111:130)
 montage({reference_roi,deformed})
 
 
