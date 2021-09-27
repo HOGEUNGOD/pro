@@ -222,7 +222,7 @@ def circle_location(radius, ratio, degree, rotate_degree=0):
     ratio : mm/pixel , output mm
     x , y 좌표 , rho, theta(degree)
    """
-    degree = np.arange(-1*degree+rotate_degree, rotate_degree+degree+10 ,10)
+    degree = np.arange(-1*degree+rotate_degree, rotate_degree+degree+5 ,5)
     degree = degree.reshape([-1,1])
     rho = np.ones([degree.shape[0],1]) * radius
     xy = pol2cart(rho, degree).round()
