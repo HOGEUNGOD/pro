@@ -16,10 +16,6 @@ def pool2d(A, kernel_size, stride, pool_mode='max'):
     2D Pooling
 
     Parameters:
-
-
-
-
         A: input 2D array
         kernel_size: int, the size of the window
         stride: int, the stride of the window
