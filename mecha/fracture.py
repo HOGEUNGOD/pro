@@ -90,14 +90,10 @@ def strain_z_calculation(poisson_ratio, strain_x, strain_y):
 
 def effective_strain_z(poisson_ratio, strain_x, strain_y, strain_xy):
     strain_z = strain_z_calculation(poisson_ratio,strain_x, strain_y)
-    result = 2 * np.sqrt(strain_x**2 + strain_y**2, strain_z**2 - strain_x*strain_y - strain_y*strain_z - strain_y*strain_z + 3*strain_xy**2) / 3
+    result = 2 * np.sqrt(strain_x**2 + strain_y**2 + strain_z**2 - strain_x*strain_y - strain_x*strain_z - strain_y*strain_z + 3*strain_xy**2) / 3
     return result
 
-def effective_strain(strain1, strain2, strain12):
-    strain3 = -(strain1 + strain2)
-    strain23, strain31 = 0,0
-    result = 2 / (3 * 2**0.5) * ((strain1 - strain2)**2 + (strain2 - strain3)**2 +(strain3-strain1)**2 + 6*strain23**2 + 6*strain31**2 + 6*strain12**2)**0.5
-    return result
+
 
 def cart2pol(x, y):
     """out put : dgree, rho"""
