@@ -85,7 +85,7 @@ class Plastic_zone:
         plt.show()
 
 def strain_z_calculation(poisson_ratio, strain_x, strain_y):
-    result = -1 * poisson_ratio *(strain_x+strain_y)/(1-poisson_ratio)
+    result = -poisson_ratio *(strain_x+strain_y)/(1-poisson_ratio)
     return result
 
 def effective_strain_z(poisson_ratio, strain_x, strain_y, strain_xy):
